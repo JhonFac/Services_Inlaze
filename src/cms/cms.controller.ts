@@ -43,29 +43,14 @@ export class CmsController {
     return this.cmsService.update(id, updateCms);
   }
 
-  @Patch(':id/status')
+  @Patch(':id/params')
   async updateCmsStatus(
     @Param('id') id: string,
     @Body(new ValidationPipe()) updateCmsDto: UpdateCmsDto,
   ) {
     try {
-      const cms = await this.findOne(id);
-      console.log(cms);
-      return this.cmsService.update(id, updateCmsDto);
-    } catch (error) {
-      throw new BadRequestException(CMS_NOT_FOUND);
-    }
-  }
-
-  @Patch(':id/code')
-  async updateCmsCode(
-    @Param('id') id: string,
-    @Body(new ValidationPipe()) updateCmsDto: UpdateCmsDto,
-  ) {
-    try {
-      const cms = await this.findOne(id);
-      console.log(cms);
-      return this.cmsService.update(id, updateCmsDto);
+      const cms = await this.findOneByUserId(id);
+      return this.cmsService.update(cms._id, updateCmsDto);
     } catch (error) {
       throw new BadRequestException(CMS_NOT_FOUND);
     }
@@ -100,14 +85,17 @@ export class CmsController {
   async findAll() {
     return this.cmsService.findAll();
   }
-  @Get(':id/idUser')
-  async findOneByUserId(@Param('id') id: string) {
-    return this.cmsService.findOneByUserId(id);
-  }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.cmsService.findOne(id);
+  }
+
+  @Get(':id/idUser')
+  async findOneByUserId(@Param('id') id: string) {
+    const cms = await this.cmsService.findOneByUserId(id);
+    if (!cms) throw new BadRequestException(CMS_NOT_FOUND);
+    return cms;
   }
 
   @Delete(':id')
