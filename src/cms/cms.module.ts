@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CMS, CmsSchema } from './schemas/cms.schema';
 import { LogCodeCms, LogCodeCmsSchema } from './schemas/log.cms.schema';
-import { CmsService, LogCodeCmsService } from './cms.service';
-import { CmsController, LogCodeCmsController } from './cms.controller';
+import { CmsService } from './cms.service';
+import { CmsController } from './cms.controller';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { CmsController, LogCodeCmsController } from './cms.controller';
       },
     ]),
   ],
-  providers: [CmsService, LogCodeCmsService],
-  controllers: [CmsController, LogCodeCmsController],
+  providers: [CmsService],
+  controllers: [CmsController],
 })
 export class CmsModule {}

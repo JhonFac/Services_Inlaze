@@ -10,7 +10,7 @@ import {
   BadRequestException,
   Patch,
 } from '@nestjs/common';
-import { CmsService, LogCodeCmsService } from './cms.service';
+import { CmsService } from './cms.service';
 import { CreateCmsDto, CreateLogCodeCmsDto } from './dtos/create-cms.dto';
 import { UpdateCmsDto } from './dtos/update-cms.dto';
 import { CMS } from './schemas/cms.schema';
@@ -18,10 +18,7 @@ import { CMS_NOT_FOUND } from '../mapping/constants/mapping.constants';
 
 @Controller('cms')
 export class CmsController {
-  constructor(
-    private cmsService: CmsService,
-    private LogCodeCmsService: LogCodeCmsService,
-  ) {}
+  constructor(private cmsService: CmsService) {}
 
   @Post()
   async create(@Body(new ValidationPipe()) createCmsDto: CreateCmsDto) {
@@ -56,23 +53,6 @@ export class CmsController {
     }
   }
 
-  @Patch(':id/logs')
-  async addLogToCms(
-    @Param('id') id: string,
-    @Body(new ValidationPipe()) createLogCodeCmsDto: CreateLogCodeCmsDto,
-  ) {
-    try {
-      const cms = await this.findOne(id);
-      this.ensureMaxLogLength(cms);
-      const logCodeCms =
-        await this.LogCodeCmsService.createLogForCms(createLogCodeCmsDto);
-      cms.logs.push(logCodeCms);
-      return this.cmsService.update(id, { logs: cms.logs });
-    } catch (error) {
-      throw new BadRequestException(CMS_NOT_FOUND);
-    }
-  }
-
   private ensureMaxLogLength(cms: CMS) {
     const MAX_LOG_LENGTH = 5;
     if (cms.logs.length >= MAX_LOG_LENGTH) {
@@ -101,15 +81,5 @@ export class CmsController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.cmsService.delete(id);
-  }
-}
-
-@Controller('log-code-cms')
-export class LogCodeCmsController {
-  constructor(private readonly logCodeCmsService: LogCodeCmsService) {}
-
-  @Get()
-  async findAll() {
-    return this.logCodeCmsService.findAll();
   }
 }

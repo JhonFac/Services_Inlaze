@@ -37,19 +37,3 @@ export class CmsService {
     return this.cmsModel.findByIdAndDelete(id).exec();
   }
 }
-
-@Injectable()
-export class LogCodeCmsService {
-  constructor(
-    @InjectModel(LogCodeCms.name) private logCodeCmsModel: Model<LogCodeCms>,
-  ) {}
-
-  async createLogForCms(createLogCodeCmsDto: CreateLogCodeCmsDto) {
-    const logCodeCms = new this.logCodeCmsModel(createLogCodeCmsDto);
-    return logCodeCms.save();
-  }
-
-  async findAll(): Promise<LogCodeCms[]> {
-    return this.logCodeCmsModel.find().exec();
-  }
-}

@@ -24,7 +24,6 @@ async function bootstrap() {
   const configService: ConfigService = app.get(ConfigService);
   const port: number = configService.get<number>('PORT') ?? 3001;
   const env: string = configService.get<string>('NODE_ENV') ?? 'development';
-
   const config = new DocumentBuilder()
     .setTitle('CMS')
     .setDescription('Documentation of CMs api services')
