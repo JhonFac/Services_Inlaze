@@ -23,7 +23,7 @@ async function bootstrap() {
 
   const configService: ConfigService = app.get(ConfigService);
   const port: number = configService.get<number>('PORT') ?? 3001;
-  // const env = configService.get<EnvironmentEnum>("NODE_ENV");
+  const env: string = configService.get<string>('NODE_ENV') ?? 'development';
 
   const config = new DocumentBuilder()
     .setTitle('CMS')
@@ -33,8 +33,7 @@ async function bootstrap() {
     .build();
 
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
-  // if (env !== EnvironmentEnum.PRODUCTION) {
-  if (true) {
+  if (env == 'development') {
     const swaggerPrefix: string = 'docs';
     SwaggerModule.setup(swaggerPrefix, app, document);
     Logger.log(

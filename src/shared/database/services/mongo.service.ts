@@ -7,5 +7,5 @@ export function buildMongoUri(config: DatabaseConfig): string {
     throw new Error('Falta información en la configuración de MongoDB');
   }
 
-  return `mongodb://${user}:${password}@${cluster}:${dbPort}/${database}?authSource=${authSource}`
+  return `mongodb://${user}:${password}@${cluster}:${dbPort}/${database}?authSource=${authSource}`;
 }
