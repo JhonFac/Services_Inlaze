@@ -22,6 +22,10 @@ export class CmsService {
     return this.cmsModel.find().exec();
   }
 
+  async findOneByUserId(idUser: string) {
+    return this.cmsModel.findOne({ idUser }).exec();
+  }
+
   async findOne(id: string) {
     return this.cmsModel.findById(id).exec();
   }

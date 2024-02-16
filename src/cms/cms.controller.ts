@@ -25,6 +25,12 @@ export class CmsController {
 
   @Post()
   async create(@Body(new ValidationPipe()) createCmsDto: CreateCmsDto) {
+    const existingCms = await this.cmsService.findOneByUserId(
+      createCmsDto.idUser,
+    );
+    if (existingCms) {
+      return existingCms;
+    }
     const createdCms = await this.cmsService.create(createCmsDto);
     return createdCms;
   }
@@ -93,6 +99,10 @@ export class CmsController {
   @Get()
   async findAll() {
     return this.cmsService.findAll();
+  }
+  @Get(':id/idUser')
+  async findOneByUserId(@Param('id') id: string) {
+    return this.cmsService.findOneByUserId(id);
   }
 
   @Get(':id')
